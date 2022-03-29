@@ -10,7 +10,10 @@ import javax.swing.*;
 import labs.models.Point;
 import labs.models.IFuncX;
 
-
+/*
+Author - kushok(https://www.cyberforum.ru/java-gui/thread1194840.html)
+Modified by Kirill Shakhov
+ */
 public class GraphModule extends JPanel {
     double x1 = -5, x2 = 5, y1 = -5, y2 = 5;
     double step_x = 1;
@@ -38,12 +41,21 @@ public class GraphModule extends JPanel {
         }
         frameOp();
     }
+    public GraphModule(Map<String, ArrayList<Point>> map_points) {
+        for(Map.Entry<String, ArrayList<Point>> entry : map_points.entrySet()){
+            JCheckBox j = new JCheckBox(entry.getKey());
+            j.setSelected(true);
+            j.addItemListener(e -> updateUI());
+            points.put(j, entry.getValue());
+        }
+        frameOp();
+    }
 
     public void frameOp() {
         JFrame JF = new JFrame("Paint");
         JPanel boxesPanel = new JPanel();
-        JF.setBounds(WIDTH, HEIGHT, WIDTH, HEIGHT);
-        // JF.setLayout(null);
+        JF.setBounds(100, 100, WIDTH + 16, HEIGHT + 28 + 38 + 10 + 10*(f.size()+points.size()));
+//        JF.setLayout(null);
 //        JF.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JF.setVisible(true);
         JF.setResizable(true);
@@ -99,7 +111,7 @@ public class GraphModule extends JPanel {
 
             @Override
             public void mouseDragged(MouseEvent evt) {
-                if (evt.getModifiers() == evt.BUTTON1_MASK) {
+                if (evt.getModifiers() == InputEvent.BUTTON1_MASK) {
                     int newX = evt.getX();
                     int newY = evt.getY();
 
@@ -116,7 +128,7 @@ public class GraphModule extends JPanel {
                     lastY = newY;
 
                     repaint();
-                } else if (evt.getModifiers() == evt.BUTTON3_MASK) {
+                } else if (evt.getModifiers() == InputEvent.BUTTON3_MASK) {
 
                     int newX = evt.getX();
                     int newY = evt.getY();
